@@ -17,6 +17,6 @@
          under the License.
 -->
 
-# com.aylien.text
+# com.estimote.sdk
 
 Plugin documentation: [doc/index.md](doc/index.md)

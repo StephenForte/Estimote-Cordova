@@ -17,11 +17,13 @@
     under the License.
 -->
 
-# com.aylien.text
+# com.estimote.sdk
 
-This plugin exracts structured information and insights from text. Based on [AYLIEN Text Analysis API](http://aylien.com/text-api), it performs Summarization and Hashtag Suggestion for any piece of text (more features to be added soon).
+Estimote Beacon is a super small device. It has a powerful 32-bit ARM® Cortex M0 CPU with 256kB flash memory, accelerometer, temperature sensor and most importantly – a 2.4 GHz Bluetooth 4.0 Smart (also known as BLE or Bluetooth low energy) bidirectional radio
 
-The plugin defines a global `aylien` object, which defines various operations that are used for data extraction.
+You can think of the beacon as a small lighthouse tower that's installed in a fixed location and broadcasts its presence to all the ships (smartphones) around. They could be as close as 2 inches and as far as 230 feet (approx. 70 metres) away.
+
+The plugin is implemented on top of the Estimote native SDKs that lets you track beacon devices around you. It defines a global `estimote` object, which defines various operations that are used for tracking a beacon device.
 
 Although the object is in the global scope, it is not available until after the `deviceready` event.
 
@@ -32,52 +34,40 @@ Although the object is in the global scope, it is not available until after the 
 
 ## Installation
 
-You need a Text Analysis API key for using this plugin, which you can obtain by subscribing to the API on [Mashape](https://www.mashape.com/aylien/text-analysis). Once you have your API key, you can install the plugin as below:
+Once you have your estimote beacons in place and configured you can install the SDK in the folloiwng way:
 
-    cordova plugin add url —variable API_KEY="YOUR_API_KEY"
+    cordova plugin add plugin_url
 
 ## Methods
 
-- aylien.summarize
-- aylien.hashtags
+- estimote.startListening
+- estimote.stopListening
 
 
-# aylien.summarize
+# estimote.startListening
 
-Summarization is used to summarize long articles by extracting a small number of key sentences.
+The method initalizes the native beacon manger for a region.
+
+    estimote.startListening("Telerik");
+
+Once done I can subscribe to the document event as shown below and as I have devices nearby it will send me list and other information that will let me identify an estimote device and do various cool things with my app:
+
+    document.addEventListener('beaconsReceived', this.onBeconsReceived, false);
+
+
+# estimote.stopListening
+
+The method stops the tracking of any further beacons send by estimote devices.
 
 ## Example
 
-    aylien.summarize("http://www.bbc.com/sport/0/football/25912393", function(result){
-        alert("Sentences:" + result.sentences);
-    });
+    estimote.stopListening();
 
-
-# aylien.hashtags
-
-Using our automatic hashtag suggestion system, you can get a list of highly-relevant hashtags that will help you get more exposure for your content on Social Media.
-
-## Example
-
-    aylien.hashtags("http://www.bbc.com/sport/0/football/25912393", function(result){
-        alert("Hash:" + result.hashtags);
-    });
-
-#aylien.sentiment
-
-Extracting sentiment from a piece of text such as a tweet, a review or an article can give us valuable insights about the intentions and emotions of the person writing it: whether its tone is positive or negative, whether it’s subjective, meaning the author is expressing their own point of view or it’s objective, meaning it’s reflecting an absolute and factual point.
-
-##Example
-
-    aylien.sentiment("http://www.bbc.com/sport/0/football/25912393", function(result){
-        alert("Hash:" + result.subjectivity_confidence);
-    });
 
 ## Supported Platforms
 
 - iOS
-- Android
 
 ## Resources
 
-For more information, please refer to the [Text Analysis API documentation](http://aylien.com/text-api-doc) on AYLIEN.
+In order to get an understanding of how estimote beacon devices work, please refer to the [Getting Started Documetnation](http://estimote.com/api/getting-started/intro-to-beacons.html).

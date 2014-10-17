@@ -1,36 +1,62 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="com.aylien.text" version="0.0.10" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
-	<name>Aylien</name>
-	<description>Aylien Text Analysis API</description>
+<plugin id="com.estimote.sdk" version="1.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+	<name>Estimote</name>
+	<description>Estimote - Context for your apps</description>
 
-	<preference name="API_KEY" />
-
-	<js-module name="aylien" src="www/aylien.js">
-		<clobbers target="aylien" />
+	<js-module name="estimote" src="www/estimote.js">
+		<clobbers target="estimote" />
 	</js-module>
 
 	<engines>
     	<engine name="cordova" version=">=3.0.0" />
-    </engines>
+  </engines>
 
 	<platform name="ios">
+
 		<config-file parent="/*" target="config.xml">
-			<feature name="Aylien">
-				<param name="ios-package" value="CDVAylien" />
+			<feature name="Estimote">
+				<param name="ios-package" value="CDVEstimote" />
 			</feature>
 		</config-file>
 
-		<header-file src="src/ios/CDVAylien.h" />
-		<source-file src="src/ios/CDVAylien.m" />
+		<framework src="CoreBluetooth.framework"/>
+		<framework src="CoreLocation.framework"/>
+		<framework src="SystemConfiguration.framework"/>
 
-        <config-file target="*-Info.plist" parent="AylienClientID">
-            <string>$API_KEY</string>
-        </config-file>
+		<source-file framework="true" src="lib/ios/EstimoteSDK/libEstimoteSDK.a"/>
+
+		<header-file src="lib/ios/EstimoteSDK/Headers/ESTBeaconFirmwareVO.h"/>
+		<header-file src="lib/ios/EstimoteSDK/Headers/ESTBeaconFirmwareInfoVO.h"/>
+		<header-file src="lib/ios/EstimoteSDK/Headers/ESTBeaconManager.h"/>
+		<header-file src="lib/ios/EstimoteSDK/Headers/ESTBeaconRegion.h"/>
+		<header-file src="lib/ios/EstimoteSDK/Headers/ESTBeaconVO.h"/>
+		<header-file src="lib/ios/EstimoteSDK/Headers/ESTBeaconDefinitions.h"/>
+		<header-file src="lib/ios/EstimoteSDK/Headers/ESTBeacon.h"/>
+
+		<header-file src="src/ios/CDVEstimote.h" />
+		<source-file src="src/ios/CDVEstimote.m" />
+
+		<config-file target="*-Info.plist" parent="UIBackgroundModes">
+			<array>
+				<string>audio</string>
+				<string>bluetooth-central</string>
+				<string>bluetooth-peripheral</string>
+				<string>external-accessory</string>
+			</array>
+		</config-file>
+
+		<config-file target="*-Info.plist" parent="NSLocationWhenInUseUsageDescription">
+			<string>This application uses your location to determine which table you're at when ordering your coffee.</string>
+		</config-file>
+
+		<config-file target="*-Info.plist" parent="NSLocationAlwaysUsageDescription">
+			<string>This application monitors your location to show you promotional offers in shops you're passing by.</string>
+		</config-file>
 
 	</platform>
 
 
-	<platform name="android">
+	<!-- <platform name="android">
 
 		<source-file src="src/android/res/values/aylien.xml" target-dir="res/values" />
 
@@ -46,7 +72,7 @@
 
      	<source-file src="src/android/AylienPlugin.java"  target-dir="src/com/telerik/aylien" />
 
-	</platform>
+	</platform> -->
 
 
 </plugin>
