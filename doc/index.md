@@ -46,13 +46,13 @@ Once you have your estimote beacons in place and configured you can install the 
 
 # estimote.startListening
 
-The method initalizes the native beacon manger for a region.
+The method initalizes the native beacon manager for a region.
 
     estimote.startListening("Telerik");
 
 Once done I can subscribe to the document event as shown below and as I have devices nearby it will send me list and other information that will let me identify an estimote device and do various cool things with my app:
 
-    document.addEventListener('beaconsReceived', this.onBeconsReceived, false);
+    document.addEventListener('beaconsReceived', this.onBeaconsReceived, false);
 
 
 # estimote.stopListening
