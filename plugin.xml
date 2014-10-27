@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="com.estimote.sdk" version="1.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+<plugin id="com.estimote.sdk" version="1.0.2" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
 	<name>Estimote</name>
 	<description>Estimote - Context for your apps</description>
 
@@ -54,25 +54,4 @@
 		</config-file>
 
 	</platform>
-
-
-	<!-- <platform name="android">
-
-		<source-file src="src/android/res/values/aylien.xml" target-dir="res/values" />
-
-        <config-file target="res/values/aylien.xml" parent="/*">
-            <string name="api_key">$API_KEY</string>
-        </config-file>
-
-		<config-file target="res/xml/config.xml" parent="/*">
-			<feature name="Aylien">
-           		<param name="android-package" value="com.telerik.aylien.AylienPlugin"/>
-         	</feature>
-     	</config-file>
-
-     	<source-file src="src/android/AylienPlugin.java"  target-dir="src/com/telerik/aylien" />
-
-	</platform> -->
-
-
 </plugin>
