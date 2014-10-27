@@ -2,7 +2,6 @@
 #import "CDVEstimote.h"
 #import <CoreLocation/CoreLocation.h>
 #import "ESTBeacon.h"
-#import "NSDictionary+Estimote.h"
 
 @implementation CDVEstimote
 
@@ -12,6 +11,7 @@
 
     self.beaconManager = [[ESTBeaconManager alloc] init];
     self.beaconManager.delegate = self;
+    self.beaconManager.avoidUnknownStateBeacons = YES;
 
     self.region = [[ESTBeaconRegion alloc] initWithProximityUUID:ESTIMOTE_PROXIMITY_UUID identifier:regionName];
 
@@ -79,7 +79,9 @@
                     [mutableDictionary setObject:beacon.macAddress forKey:@"macAddress"];
                 if (beacon.power)
                     [mutableDictionary setObject:beacon.power forKey:@"power"];
-                [mutableDictionary setObject:@(beacon.color) forKey:@"color"];
+                [mutableDictionary setObject:@(beacon.color) forKey:@"colorId"];
+                [mutableDictionary setObject:[self getBeaconColorName:beacon.color] forKey:@"color"];
+              
                 if (beacon.name)
                     [mutableDictionary setObject:beacon.name forKey:@"name"];
                 [mutableDictionary setObject:beacon.distance forKey:@"distance"];
@@ -91,6 +93,9 @@
                 [mutableDictionary setObject:@(beacon.proximity) forKey:@"proximity"];
                 [mutableDictionary setObject:@(beacon.isMoving) forKey:@"isMoving"];
 
+                if (beacon.batteryLevel)
+                  [mutableDictionary setObject:beacon.batteryLevel forKey:@"batteryLevel"];
+
                 [mutableArray addObject:mutableDictionary];
             }
         }
@@ -99,12 +104,27 @@
             NSDictionary *data = [NSDictionary dictionaryWithObject:mutableArray forKey:@"beacons"];
 
             CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:data];
+          
+            [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
 
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
             });
         }
     }
+}
+
+-(NSString*) getBeaconColorName:(int) color {
+  NSDictionary *colors =
+  @{
+    @(ESTBeaconColorUnknown) : @"Unknown",
+    @(ESTBeaconColorMint) : @"Mint",
+    @(ESTBeaconColorIce) : @"Ice",
+    @(ESTBeaconColorBlueberry) : @"Blueberry",
+    @(ESTBeaconColorWhite) : @"White",
+    @(ESTBeaconColorTransparent) : @"Transparent",
+    };
+  return [colors objectForKey:@(color)];
 }
 
 - (void)stopListening:(CDVInvokedUrlCommand*)command
