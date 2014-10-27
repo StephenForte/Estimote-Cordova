@@ -24,7 +24,7 @@
 {
     if ([ESTBeaconManager authorizationStatus] == kCLAuthorizationStatusNotDetermined)
     {
-        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
+        if (floor(NSFoundationVersionNumber) <= 1047.25) { // NSFoundationVersionNumber_iOS_7_1
             /*
              * No need to explicitly request permission in iOS < 8, will happen automatically when starting ranging.
              */
