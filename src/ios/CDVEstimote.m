@@ -5,7 +5,7 @@
 
 @implementation CDVEstimote
 
-- (void)startListening:(CDVInvokedUrlCommand*)command
+- (void)startRanging:(CDVInvokedUrlCommand*)command
 {
     NSString *regionName = [command.arguments objectAtIndex:0];
 
@@ -81,7 +81,7 @@
                     [mutableDictionary setObject:beacon.power forKey:@"power"];
                 [mutableDictionary setObject:@(beacon.color) forKey:@"colorId"];
                 [mutableDictionary setObject:[self getBeaconColorName:beacon.color] forKey:@"color"];
-              
+
                 if (beacon.name)
                     [mutableDictionary setObject:beacon.name forKey:@"name"];
                 [mutableDictionary setObject:beacon.distance forKey:@"distance"];
@@ -104,7 +104,7 @@
             NSDictionary *data = [NSDictionary dictionaryWithObject:mutableArray forKey:@"beacons"];
 
             CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:data];
-          
+
             [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
 
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -127,7 +127,7 @@
   return [colors objectForKey:@(color)];
 }
 
-- (void)stopListening:(CDVInvokedUrlCommand*)command
+- (void)stopRanging:(CDVInvokedUrlCommand*)command
 {
     [self.beaconManager stopRangingBeaconsInRegion:self.region];
 }
