@@ -120,7 +120,9 @@ public class EstimotePlugin extends CordovaPlugin {
 
     private void stopRanging(JSONArray args, final CallbackContext callbackCtx) throws RemoteException
     {
-        beaconManager.stopRanging(region);
+    	if (beaconManager != null){
+    		beaconManager.stopRanging(region);
+    	}
     }
 
 	/**
