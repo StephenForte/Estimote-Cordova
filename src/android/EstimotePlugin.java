@@ -61,35 +61,46 @@ public class EstimotePlugin extends CordovaPlugin {
                 @Override
                 public void onBeaconsDiscovered(Region region, List<Beacon> beacons) {
                     Log.d(LOG_TAG, "Ranged beacons: " + beacons);
-                    for(Beacon b: beacons) {
-                        try {
+
+                	JSONObject device = new JSONObject();
+                    JSONArray array = new JSONArray();
+
+                    try {
+                    	for(Beacon b: beacons) {
+
                             String name = b.getName();
                             String address = b.getMacAddress();
                             String proximityUUID = b.getProximityUUID();
-                            JSONObject device = new JSONObject();
-                            device.put("name", name);
-                            device.put("address", address);
-                            device.put("proximityUUID", proximityUUID);
-                            device.put("major", b.getMajor());
-                            device.put("minor", b.getMinor());
-                            device.put("macAddress", b.getMacAddress());
 
-                            // Send one device at a time, keeping callback to be used again
-                            if(rangingCallback != null) {
-                                PluginResult result = new PluginResult(PluginResult.Status.OK, device);
-                                result.setKeepCallback(true);
-                                rangingCallback.sendPluginResult(result);
-                            } else {
-                                Log.e(LOG_TAG, "CallbackContext for discovery doesn't exist.");
-                            }
-                        } catch(JSONException e) {
-                            if(rangingCallback != null) {
-                                EstimotePlugin.this.error(rangingCallback,
-                                        e.getMessage(),
-                                        BluetoothError.ERR_UNKNOWN
-                                );
-                                rangingCallback = null;
-                            }
+                            JSONObject beacon = new JSONObject();
+
+                            beacon.put("name", name);
+                            beacon.put("macAddress", address);
+                            beacon.put("proximityUUID", proximityUUID);
+                            beacon.put("major", b.getMajor());
+                            beacon.put("minor", b.getMinor());
+                            beacon.put("rssi", b.getRssi());
+
+                            array.put(beacon);
+                    	}
+
+                    	device.put("beacons", array);
+
+                        if(rangingCallback != null) {
+                            PluginResult result = new PluginResult(PluginResult.Status.OK, device);
+                            result.setKeepCallback(true);
+                            rangingCallback.sendPluginResult(result);
+                        } else {
+                            Log.e(LOG_TAG, "CallbackContext for discovery doesn't exist.");
+                        }
+
+                    } catch(JSONException e) {
+                        if(rangingCallback != null) {
+                            EstimotePlugin.this.error(rangingCallback,
+                                    e.getMessage(),
+                                    BluetoothError.ERR_UNKNOWN
+                            );
+                            rangingCallback = null;
                         }
                     }
                 }
@@ -100,11 +111,6 @@ public class EstimotePlugin extends CordovaPlugin {
                 public void onServiceReady() {
                     try {
                         beaconManager.startRanging(region);
-                        JSONObject event = new JSONObject();
-                        event.put("event", "connected");
-                        PluginResult result = new PluginResult(PluginResult.Status.OK, event);
-                        result.setKeepCallback(true);
-                        rangingCallback.sendPluginResult(result);
                     } catch (Throwable e) {
                         Log.e(LOG_TAG, "Cannot start ranging", e);
                         EstimotePlugin.this.error(callbackCtx, "Cannot start ranging::" + e.getMessage(), BluetoothError.ERR_UNKNOWN);
