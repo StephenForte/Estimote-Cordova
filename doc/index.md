@@ -74,6 +74,7 @@ The method stops the tracking of any further beacons send by estimote devices.
 ## Supported Platforms
 
 - iOS
+- Android
 
 ## Resources
 
