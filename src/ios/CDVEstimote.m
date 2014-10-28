@@ -24,11 +24,11 @@
 {
     if ([ESTBeaconManager authorizationStatus] == kCLAuthorizationStatusNotDetermined)
     {
-        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
+        if (floor(NSFoundationVersionNumber) <= 1047.25) { // NSFoundationVersionNumber_iOS_7_1
             /*
              * No need to explicitly request permission in iOS < 8, will happen automatically when starting ranging.
              */
-            [self.beaconManager startEstimoteBeaconsDiscoveryForRegion:self.region];
+            [self.beaconManager startRangingBeaconsInRegion:self.region];
         } else {
             /*
              * Request permission to use Location Services. (new in iOS 8)
@@ -43,7 +43,7 @@
     }
     else if([ESTBeaconManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
     {
-        [self.beaconManager startEstimoteBeaconsDiscoveryForRegion:self.region];
+        [self.beaconManager startRangingBeaconsInRegion:self.region];
     }
     else if([ESTBeaconManager authorizationStatus] == kCLAuthorizationStatusDenied)
     {
@@ -84,20 +84,16 @@
 
                 if (beacon.name)
                     [mutableDictionary setObject:beacon.name forKey:@"name"];
-                if (beacon.name)
-                    [mutableDictionary setObject:beacon.distance forKey:@"distance"];
                 if (beacon.rssi)
                     [mutableDictionary setObject:@(beacon.rssi) forKey:@"rssi"];
-                if (beacon.remainingLifetime)
-                    [mutableDictionary setObject:beacon.remainingLifetime forKey:@"remainingLifetime"];
                 if (beacon.proximityUUID)
                     [mutableDictionary setObject:beacon.proximityUUID.UUIDString forKey:@"proximityUUID"];
-
+                if (beacon.distance)
+                  [mutableDictionary setObject:beacon.distance forKey:@"distance"];
                 if (beacon.proximity)
                     [mutableDictionary setObject:@(beacon.proximity) forKey:@"proximity"];
                 if (beacon.isMoving)
                     [mutableDictionary setObject:@(beacon.isMoving) forKey:@"isMoving"];
-
                 if (beacon.batteryLevel)
                   [mutableDictionary setObject:beacon.batteryLevel forKey:@"batteryLevel"];
 
