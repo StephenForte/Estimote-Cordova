@@ -28,7 +28,7 @@
             /*
              * No need to explicitly request permission in iOS < 8, will happen automatically when starting ranging.
              */
-            [self.beaconManager startRangingBeaconsInRegion:self.region];
+            [self.beaconManager startEstimoteBeaconsDiscoveryForRegion:self.region];
         } else {
             /*
              * Request permission to use Location Services. (new in iOS 8)
@@ -43,7 +43,7 @@
     }
     else if([ESTBeaconManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
     {
-        [self.beaconManager startRangingBeaconsInRegion:self.region];
+        [self.beaconManager startEstimoteBeaconsDiscoveryForRegion:self.region];
     }
     else if([ESTBeaconManager authorizationStatus] == kCLAuthorizationStatusDenied)
     {
@@ -58,7 +58,7 @@
     [self startRangingBeacons];
 }
 
-- (void)beaconManager:(ESTBeaconManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(ESTBeaconRegion *)region
+- (void)beaconManager:(ESTBeaconManager *)manager didDiscoverBeacons:(NSArray *)beacons inRegion:(ESTBeaconRegion *)region
 {
     [self processBeacons:beacons];
 }
@@ -84,14 +84,19 @@
 
                 if (beacon.name)
                     [mutableDictionary setObject:beacon.name forKey:@"name"];
-                [mutableDictionary setObject:beacon.distance forKey:@"distance"];
-                [mutableDictionary setObject:@(beacon.rssi) forKey:@"rssi"];
+                if (beacon.name)
+                    [mutableDictionary setObject:beacon.distance forKey:@"distance"];
+                if (beacon.rssi)
+                    [mutableDictionary setObject:@(beacon.rssi) forKey:@"rssi"];
                 if (beacon.remainingLifetime)
                     [mutableDictionary setObject:beacon.remainingLifetime forKey:@"remainingLifetime"];
-                [mutableDictionary setObject:beacon.proximityUUID.UUIDString forKey:@"proximityUUID"];
+                if (beacon.proximityUUID)
+                    [mutableDictionary setObject:beacon.proximityUUID.UUIDString forKey:@"proximityUUID"];
 
-                [mutableDictionary setObject:@(beacon.proximity) forKey:@"proximity"];
-                [mutableDictionary setObject:@(beacon.isMoving) forKey:@"isMoving"];
+                if (beacon.proximity)
+                    [mutableDictionary setObject:@(beacon.proximity) forKey:@"proximity"];
+                if (beacon.isMoving)
+                    [mutableDictionary setObject:@(beacon.isMoving) forKey:@"isMoving"];
 
                 if (beacon.batteryLevel)
                   [mutableDictionary setObject:beacon.batteryLevel forKey:@"batteryLevel"];
