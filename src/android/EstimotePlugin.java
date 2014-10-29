@@ -16,6 +16,7 @@ import android.util.Log;
 import com.estimote.sdk.Region;
 import com.estimote.sdk.Beacon;
 import com.estimote.sdk.BeaconManager;
+import com.estimote.sdk.Utils;
 
 public class EstimotePlugin extends CordovaPlugin {
 
@@ -29,6 +30,8 @@ public class EstimotePlugin extends CordovaPlugin {
 
     private CallbackContext rangingCallback;
     private BeaconManager beaconManager;
+    private int startY = -1;
+    private int segmentLength = -1;
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -80,6 +83,7 @@ public class EstimotePlugin extends CordovaPlugin {
                             beacon.put("major", b.getMajor());
                             beacon.put("minor", b.getMinor());
                             beacon.put("rssi", b.getRssi());
+                            beacon.put("distance", computeDotPosY(b));
 
                             array.put(beacon);
                     	}
@@ -123,6 +127,13 @@ public class EstimotePlugin extends CordovaPlugin {
         	this.error(callbackCtx, "Outer exception handler. " + e.getMessage(), BluetoothError.ERR_UNKNOWN);
         }
     }
+
+	private int computeDotPosY(final Beacon beacon)
+	{
+		// Let's put dot at the end of the scale when it's further than 6m.
+		double distance = Math.min(Utils.computeAccuracy(beacon), 6.0);
+		return startY + (int) (segmentLength * (distance / 6.0));
+	}
 
     private void stopRanging(JSONArray args, final CallbackContext callbackCtx) throws RemoteException
     {
