@@ -31,7 +31,7 @@
     /*
      * No need to explicitly request permission in iOS < 8, will happen automatically when starting ranging.
      */
-    [self.beaconManager startEstimoteBeaconsDiscoveryForRegion:self.region];
+    [self.beaconManager startRangingBeaconsInRegion:self.region];
     //        } else {
     /*
      * Request permission to use Location Services. (new in iOS 8)
@@ -60,7 +60,7 @@
     [self startRangingBeacons];
 }
 
-- (void)beaconManager:(ESTBeaconManager *)manager didDiscoverBeacons:(NSArray *)beacons inRegion:(ESTBeaconRegion *)region
+- (void)beaconManager:(ESTBeaconManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(ESTBeaconRegion *)region
 {
     [self processBeacons:beacons];
 }
