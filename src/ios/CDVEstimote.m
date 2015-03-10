@@ -25,35 +25,31 @@
 // TODO Uncomment these lines when we build with XCode 6 / iOS 8 SDK and update the Estimote SDK from https://github.com/Estimote/iOS-SDK/releases
 -(void)startRangingBeacons
 {
-    //    if ([ESTBeaconManager authorizationStatus] == kCLAuthorizationStatusNotDetermined)
-    //    {
-    //        if (floor(NSFoundationVersionNumber) <= 1047.25) { // NSFoundationVersionNumber_iOS_7_1
-    /*
-     * No need to explicitly request permission in iOS < 8, will happen automatically when starting ranging.
-     */
-    [self.beaconManager startRangingBeaconsInRegion:self.region];
-    //        } else {
-    /*
-     * Request permission to use Location Services. (new in iOS 8)
-     * We ask for "always" authorization so that the Notification Demo can benefit as well.
-     * Also requires NSLocationAlwaysUsageDescription in Info.plist file.
-     *
-     * For more details about the new Location Services authorization model refer to:
-     * https://community.estimote.com/hc/en-us/articles/203393036-Estimote-SDK-and-iOS-8-Location-Services
-     */
-    //            [self.beaconManager requestAlwaysAuthorization];
-    //        }
-    //    }
-    //    else if([ESTBeaconManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
-    //    {
-    //        [self.beaconManager startRangingBeaconsInRegion:self.region];
-    //    }
-    //    else if([ESTBeaconManager authorizationStatus] == kCLAuthorizationStatusDenied)
-    //    {
-    //    }
-    //    else if([ESTBeaconManager authorizationStatus] == kCLAuthorizationStatusRestricted){
-    //
-    //    }
+    if ([ESTBeaconManager authorizationStatus] == kCLAuthorizationStatusNotDetermined){
+            if (floor(NSFoundationVersionNumber) <= 1047.25) { // NSFoundationVersionNumber_iOS_7_1
+                [self.beaconManager startRangingBeaconsInRegion:self.region];
+            } else {
+                /*
+                 * Request permission to use Location Services. (new in iOS 8)
+                 * We ask for "always" authorization so that the Notification Demo can benefit as well.
+                 * Also requires NSLocationAlwaysUsageDescription in Info.plist file.
+                 *
+                 * For more details about the new Location Services authorization model refer to:
+                 * https://community.estimote.com/hc/en-us/articles/203393036-Estimote-SDK-and-iOS-8-Location-Services
+                 */
+               [self.beaconManager requestAlwaysAuthorization];
+           }
+       }
+       else if([ESTBeaconManager authorizationStatus] == kCLAuthorizationStatusAuthorized)
+       {
+           [self.beaconManager startRangingBeaconsInRegion:self.region];
+       }
+       else if([ESTBeaconManager authorizationStatus] == kCLAuthorizationStatusDenied)
+       {
+       }
+       else if([ESTBeaconManager authorizationStatus] == kCLAuthorizationStatusRestricted){
+    
+       }
 }
 - (void)beaconManager:(ESTBeaconManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
