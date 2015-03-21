@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="com.estimote.sdk" version="1.0.5" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+<plugin id="com.estimote.sdk" version="1.0.6" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
 	<name>Estimote</name>
 	<description>Estimote - Context for your apps</description>
 
@@ -37,14 +37,6 @@
 
 		<header-file src="src/ios/CDVEstimote.h" />
 		<source-file src="src/ios/CDVEstimote.m" />
-
-		<config-file target="*-Info.plist" parent="UIBackgroundModes">
-			<array>
-				<string>bluetooth-central</string>
-				<string>bluetooth-peripheral</string>
-				<string>external-accessory</string>
-			</array>
-		</config-file>
 
 		<config-file target="*-Info.plist" parent="NSLocationWhenInUseUsageDescription">
 			<string>This application uses your location to determine which table you're at when ordering your coffee.</string>
