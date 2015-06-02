@@ -50,7 +50,14 @@ The method initalizes the native beacon manager for a region.
 
     estimote.startRanging("Telerik");
 
-Once done I can subscribe to the document event as shown below and as I have devices nearby it will send me list and other information that will let me identify an Estimote beacon and do various cool things with my app:
+Optionally you can pass in a UUID like "B9407F30-F5F8-466E-AFF9-25556B57FE6D" which is the default and is used to detect regular Estimote beacons.
+
+    estimote.startRanging({
+        region: "Telerik",
+        uuid: "B9407F30-F5F8-466E-AFF9-25556B57FE6D" // default
+    });
+
+Once done you can subscribe to the document event as shown below and as I have devices nearby it will send me list and other information that will let me identify an Estimote beacon and do various cool things with my app:
 
     document.addEventListener('beaconsReceived', this.onBeaconsReceived, false);
 
