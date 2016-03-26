@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <plugin
 		id="com.estimote.sdk"
-		version="1.1.0"
+		version="1.1.1"
 		xmlns="http://apache.org/cordova/ns/plugins/1.0"
 		xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -38,7 +38,7 @@
 		<header-file src="lib/ios/EstimoteSDK/Headers/ESTBeaconDefinitions.h"/>
 		<header-file src="lib/ios/EstimoteSDK/Headers/ESTBeacon.h"/>
 		<header-file src="lib/ios/EstimoteSDK/Headers/ESTDefinitions.h"/>
-		
+
 
 		<header-file src="src/ios/CDVEstimote.h" />
 		<source-file src="src/ios/CDVEstimote.m" />
@@ -68,8 +68,8 @@
       <!-- Needed for Bluetooth scanning on Android M and above. -->
 		  <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION"/>
       </config-file>
-      
-      
+
+
 
       <config-file target="AndroidManifest.xml" parent="/manifest/application">
           <service android:name="com.estimote.sdk.service.BeaconService" android:exported="false" />
