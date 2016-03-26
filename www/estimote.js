@@ -7,62 +7,62 @@ Estimote.prototype.scanOnce = function scanOnce(region) {
 
     var options = {};
 
-    if(typeof region === 'object') {
-      options = region;
-    } else if ( typeof region === 'string' ) {
-      options.region = region;
+    if (typeof region === 'object') {
+        options = region;
+    } else if (typeof region === 'string') {
+        options.region = region;
     }
 
-    return new Promise( function(resolve, reject) {
-      /**
-       * all the usability of _notification + more.
-       **/
-      var resolve_function = function(info) {
-        if( info.beacons.length > 0) {
-          cordova.fireDocumentEvent('beaconsReceived', info);
-          this.stopRanging();
-          resolve(info);
+    return new Promise(function(resolve, reject) {
+        /**
+         * all the usability of _notification + more.
+         **/
+        var resolve_function = function(info) {
+            if (info.beacons.length > 0) {
+                cordova.fireDocumentEvent('beaconsReceived', info);
+                estimote.stopRanging();
+                resolve(info);
+            }
+        };
+        /**
+         *  Actually make the error useful!
+         **/
+        var reject_function = function(error) {
+            console.error(error);
+            estimote.stopRanging();
+            reject(error);
         }
-      }.bind(this);
-      /**
-       *  Actually make the error useful!
-       **/
-      var reject_function = function(error) {
-        console.error(error);
-        this.stopRanging();
-        reject(error);
-      }.bind(this);
 
-      exec(resolve_function, reject_function, 'Estimote', 'startRanging', [options] );
+        exec(resolve_function, reject_function, 'Estimote', 'startRanging', [options]);
 
     });
 };
 
 Estimote.prototype.startRanging = function startRanging(region) {
-  var options = {};
+    var options = {};
 
-  if(typeof region === 'object') {
-    options = region;
-  } else if ( typeof region === 'string' ) {
-    options.region = region;
-  }
-
-  var resolve_function = function(info) {
-    if( info.beacons.length > 0) {
-      cordova.fireDocumentEvent('beaconsReceived', info);
+    if (typeof region === 'object') {
+        options = region;
+    } else if (typeof region === 'string') {
+        options.region = region;
     }
-  }
 
-  var reject_function = function(error) {
-    console.error(error);
-  }
+    var resolve_function = function(info) {
+        if (info.beacons.length > 0) {
+            cordova.fireDocumentEvent('beaconsReceived', info);
+        }
+    };
 
-  exec(resolve_function, reject_function, 'Estimote', 'startRanging', [options] );
+    var reject_function = function(error) {
+        console.error(error);
+    };
+
+    exec(resolve_function, reject_function, 'Estimote', 'startRanging', [options]);
 
 }
 
 Estimote.prototype.stopRanging = function stopRanging() {
-  exec(null, null, 'Estimote', 'stopRanging', []);
+    exec(null, null, 'Estimote', 'stopRanging', []);
 };
 
 var estimote = new Estimote();
